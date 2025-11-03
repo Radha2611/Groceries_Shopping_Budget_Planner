@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🥕 Smart Grocery Cart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <img src="khau.gif" alt="Grocery Basket" class="top-image">
+
+    <div class="title-bar">
+      <h1>Smart Grocery Cart</h1>
+      <button id="themeToggle">🌙</button>
+    </div>
+
+    <p>Fill your grocery cart wisely — powered by fractional knapsack logic!</p>
+
+    <div class="input-section">
+      <input type="text" id="itemName" placeholder="Food Item">
+      <input type="number" id="itemPrice" placeholder="Price (₹)">
+      <input type="number" id="itemValue" placeholder="Nutritional Value (1–10)">
+      <button onclick="addItem()">Add Item</button>
+    </div>
+
+    <table id="itemTable">
+      <tr><th>Item</th><th>Price (₹)</th><th>Nutritional Value</th><th>Value/Price</th></tr>
+    </table>
+
+    <div class="budget-section">
+      <input type="number" id="budget" placeholder="Enter Grocery Budget (₹)">
+      <button onclick="calculate()">🥗 Optimize My Cart</button>
+      <button id="downloadCSV">📂 Export CSV</button>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <!-- 🛒 Moving trolley GIF -->
+  <img id="trolley" src="trolley2.gif" alt="Moving Trolley">
+
+  <script>
+    const items = [];
+
+    function addItem() {
+      const name = document.getElementById("itemName").value;
+      const price = parseFloat(document.getElementById("itemPrice").value);
+      const value = parseFloat(document.getElementById("itemValue").value);
+
+      if (!name || isNaN(price) || isNaN(value) || price <= 0 || value <= 0) {
+        return alert("Please enter valid grocery details!");
+      }
+
+      const ratio = value / price;
+      items.push({ name, price, value, ratio });
+
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${name}</td><td>₹${price}</td><td>${value}</td><td>${ratio.toFixed(3)}</td>`;
+      document.getElementById("itemTable").appendChild(row);
+
+      document.getElementById("itemName").value = '';
+      document.getElementById("itemPrice").value = '';
+      document.getElementById("itemValue").value = '';
+    }
+
+    function calculate() {
+      const budget = parseFloat(document.getElementById("budget").value);
+      if (isNaN(budget) || budget <= 0) return alert("Enter a valid grocery budget!");
+
+      const sorted = [...items].sort((a, b) => b.ratio - a.ratio);
+      let remaining = budget;
+      let totalValue = 0;
+      let resultHTML = `<h2>🛒 Optimized Grocery Plan</h2>`;
+      resultHTML += `<p><b>Budget:</b> ₹${budget}</p><ul>`;
+
+      for (const item of sorted) {
+        if (remaining <= 0) break;
+
+        if (item.price <= remaining) {
+          totalValue += item.value;
+          remaining -= item.price;
+          resultHTML += `<li>✅ ${item.name} — full quantity (₹${item.price}, nutrition ${item.value})</li>`;
+        } else {
+          const fraction = remaining / item.price;
+          const valueTaken = item.value * fraction;
+          totalValue += valueTaken;
+          remaining = 0;
+          resultHTML += `<li>🥄 ${item.name} — partial (${(fraction * 100).toFixed(1)}%) (₹${(item.price * fraction).toFixed(2)}, nutrition ${valueTaken.toFixed(2)})</li>`;
+        }
+      }
+
+      resultHTML += `</ul><p><b>Total Nutrition Gained:</b> ${totalValue.toFixed(2)}<br><b>Remaining Budget:</b> ₹${remaining.toFixed(2)}</p>`;
+      document.getElementById("result").innerHTML = resultHTML;
+    }
+
+    // 📂 Export CSV
+    function exportToCSV() {
+      const rows = document.querySelectorAll("table tr");
+      let csv = [];
+
+      rows.forEach((row) => {
+        const cols = row.querySelectorAll("td, th");
+        const rowData = [];
+        cols.forEach((col) => rowData.push(col.innerText));
+        csv.push(rowData.join(","));
+      });
+
+      const csvContent = csv.join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "grocery_budget.csv";
+      link.click();
+    }
+    document.getElementById("downloadCSV").addEventListener("click", exportToCSV);
+
+    // 🌙 Toggle dark mode
+    const toggle = document.getElementById("themeToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      toggle.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+    });
+  </script>
+</body>
+</html>
