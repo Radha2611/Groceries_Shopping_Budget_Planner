@@ -4,8 +4,8 @@
 You can add your items, assign their importance (value), and set a total budget. The app then calculates the most valuable combination of items you can buy within your budget.
 
 Test: https://groceriesplanner2.netlify.app/
+<img width="1587" height="860" alt="image" src="https://github.com/user-attachments/assets/0ce294d7-1e2d-4b14-8107-194dc6da38bd" />
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ac366d36-bcd9-4ff7-a26e-d3abbbe8562c" />
 
 ## ✨ Features
 - 🧮 **Smart Optimization:** Calculates the best combination of items based on their value/price ratio.
