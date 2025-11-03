@@ -19,15 +19,15 @@ Test: https://groceriesplanner2.netlify.app/
 - **CSS3**
 - **JavaScript (Vanilla JS)**
 
-
-**Team Members:**
-Akshita Pardeshi
-Janhavi Parate
-Radha Singh
-
 ## 🚀 How to Run Locally
 1. Download or clone this repository:
    ```bash
    git clone https://github.com/<your-username>/smart-budget-basket.git
 2. Open the folder and double-click index.html to open it in your browser.
    
+
+
+**Team Members:**
+Akshita Pardeshi
+Janhavi Parate
+Radha Singh
