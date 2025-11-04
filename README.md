@@ -28,6 +28,6 @@ Test: https://groceriesplanner2.netlify.app/
 
 
 **Team Members:**
-Akshita Pardeshi
-Janhavi Parate
+Akshita Pardeshi,
+Janhavi Parate,
 Radha Singh
